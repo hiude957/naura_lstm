@@ -1,0 +1,5 @@
+cache-dir = "/vepfs-mlp2/mlp-public/250259/lyh/.uv_cache"
+
+[[index]]
+url = "https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple/"
+default = true

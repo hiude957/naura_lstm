@@ -1,0 +1,62 @@
+project_name: event_driven_apc_lstm
+seed: 42
+
+paths:
+  raw_dir: data/raw
+  processed_dir: data/processed
+  manifest_dir: data/manifests
+  meta_dir: data/meta
+  output_dir: outputs
+  ckpt_dir: outputs/ckpt
+  plot_dir: outputs/plots
+
+data:
+  session_gap_sec: 30.0
+  seq_len: 128
+  horizons_events: [1, 3, 5]
+  dt_clip_sec: 300.0
+  max_files_in_memory: 4
+
+  split:
+    val_days: ["20260321"]
+
+  loader:
+    batch_size: 64
+    num_workers: 4
+    pin_memory: true
+
+  thresholds:
+    change_quantile: 0.90
+    min_threshold: 0.01
+
+model:
+  recipe_emb_dim: 16
+  event_hidden_dim: 128
+  state_hidden_dim: 256
+  lstm_hidden_dim: 256
+  lstm_layers: 2
+  dropout: 0.2
+  tail_pool_k: 16
+
+train:
+  epochs: 40
+  lr: 0.001
+  weight_decay: 0.0001
+  grad_clip: 1.0
+  early_stopping_patience: 8
+  amp: true
+  log_every_n_steps: 50
+  cls_loss_weight: 0.3
+  horizon_loss_weights: [0.5, 0.3, 0.2]
+
+wandb:
+  enabled: true
+  project: apc-event-lstm
+  entity: null
+  run_name: null
+  log_model: false
+
+plots:
+  top_k_channels: 6
+  max_points_per_plot: 800
+  selected_channels: []
